@@ -1,0 +1,19 @@
+{
+    "name": "hitslab/knowmd",
+    "description": "Static site generator base on markdown for writing technical documentation or knowledge base",
+    "type": "project",
+    "authors": [
+        {
+            "name": "Alexandr Ladygin",
+            "email": "hitslab@yandex.ru"
+        }
+    ],
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {"App\\": "src/"}
+    },
+    "require": {
+        "erusev/parsedown": "^1.7",
+        "symfony/dependency-injection": "^5.1"
+    }
+}
