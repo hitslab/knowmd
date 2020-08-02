@@ -27,7 +27,7 @@ class SidebarService
         foreach ($documents as $document) {
             $html .= "<li>";
             $link = $this->getArticleLink($document);
-            $html .= "<a href=\"{$link}\">{$document->name}</a>";
+            $html .= "<a class=\"sidebar-heading\" href=\"{$link}\">{$document->name}</a>";
             if (count($document->articles)) {
                 $html .= "<ul>";
                 foreach ($document->articles as $article) {

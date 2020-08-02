@@ -3,18 +3,82 @@
 <head>
   <meta charset="utf-8">
   <title>KnowMD</title>
-  <meta name="description" content="The HTML5 Herald">
-  <meta name="author" content="SitePoint">
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.20.0/themes/prism.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.20.0/themes/prism-tomorrow.min.css">
+  <style>
+      body {
+          font-family: 'Roboto', sans-serif;
+          color: #0c2035;
+      }
+
+      .container {
+          display: grid;
+          grid-template-columns: 300px 1fr;
+          grid-template-rows: 1fr;
+          gap: 1px 1px;
+          grid-template-areas: ". .";
+      }
+
+      /* Sidebar */
+
+      .sidebar ul li {
+          list-style-type: none;
+      }
+
+      .sidebar ul {
+          padding-left: 20px;
+      }
+
+      .sidebar li {
+          line-height: 26px;
+      }
+
+      .sidebar a {
+          text-decoration: none;
+          color: #0c2035;
+      }
+
+      .sidebar a.sidebar-heading {
+          font-weight: 700;
+      }
+
+      .sidebar a.active {
+          font-weight: 500;
+          color: #2666aa;
+      }
+
+      .sidebar a.sidebar-heading.active {
+          font-weight: 700;
+      }
+
+      /* Content */
+
+      .content-container {
+          display: flex;
+          flex-direction: row;
+          justify-content: center;
+      }
+
+      .content {
+          max-width: 740px;
+          flex-grow: 1;
+      }
+
+      /* Elements */
+
+      code {
+          color: #004d9d;
+      }
+  </style>
 </head>
 <body>
-<div class="container-fluid">
-  <div class="row">
-    <div class="col-2">{sidebar}</div>
-    <div class="offset-1 col-6">{document}</div>
+<div class="container">
+  <div class="sidebar">
+    {sidebar}
   </div>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.20.0/prism.min.js"></script>
+  <div class="content-container">
+    <div class="content">{document}</div>
+  </div>
 </div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.20.0/prism.min.js"></script>
 </body>
 </html>
