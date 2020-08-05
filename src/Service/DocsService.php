@@ -20,6 +20,7 @@ class DocsService
         FilesService $filesService,
         TemplateService $templateService,
         SidebarService $sidebarService,
+        Parsedown $parser,
         $docsPath,
         $buildPath
     ) {
@@ -27,7 +28,7 @@ class DocsService
         $this->templateService = $templateService;
         $this->docsPath = $docsPath;
         $this->buildPath = $buildPath;
-        $this->parser = new Parsedown();
+        $this->parser = $parser;
         $this->sidebarService = $sidebarService;
     }
 
@@ -60,11 +61,15 @@ class DocsService
             }
 
             $document = new Document($documentFile);
-            $document->name = $this->getArticleName($document);
+            $this->fillArticle($document);
             $document->articles = $this->getDocumentArticles($document);
 
             $documents[] = $document;
         }
+
+        usort($documents, function ($d1, $d2) {
+            return strcasecmp(dirname($d1->path), dirname($d2->path));
+        });
 
         return $documents;
     }
@@ -85,7 +90,7 @@ class DocsService
             }
 
             $article = new Article($file);
-            $article->name = $this->getArticleName($article);
+            $this->fillArticle($article);
 
             $articles[] = $article;
         }
@@ -116,13 +121,13 @@ class DocsService
 
     /**
      * @param Article $article
-     * @return string
      */
-    private function getArticleName($article)
+    private function fillArticle(Article $article)
     {
-        $regexp = '/^#.*/m';
+        $regexp = '/^#{1,2}[^#].*/m';
 
         $name = null;
+        $headers = [];
 
         $handle = fopen($article->path, "r");
 
@@ -130,8 +135,14 @@ class DocsService
             while (($line = fgets($handle)) !== false) {
                 preg_match($regexp, $line, $matches);
                 if (count($matches)) {
-                    $name = $matches[0];
-                    break;
+                    $headerValue = str_replace('#', '', $matches[0]);
+                    $headerValue = trim($headerValue);
+
+                    if ($name === null) {
+                        $name = $headerValue;
+                    } else {
+                        $headers[] = $headerValue;
+                    }
                 }
             }
             fclose($handle);
@@ -142,11 +153,9 @@ class DocsService
         if ($name === null) {
             $name = basename($article->path);
             $name = str_replace('.md', '', $name);
-        } else {
-            $name = str_replace('#', '', $name);
-            $name = trim($name);
         }
 
-        return $name;
+        $article->name = $name;
+        $article->headers = $headers;
     }
 }

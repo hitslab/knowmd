@@ -22,18 +22,30 @@ class SidebarService
      */
     public function generateSidebar(array $documents)
     {
-        $html = "<ul>";
+        $html = "<ul class=\"documents-list\">";
 
         foreach ($documents as $document) {
-            $html .= "<li>";
+            $html .= "<li class=\"document-item\">";
             $link = $this->getArticleLink($document);
-            $html .= "<a class=\"sidebar-heading\" href=\"{$link}\">{$document->name}</a>";
+            $html .= "<a href=\"{$link}\">{$document->name}</a>";
             if (count($document->articles)) {
-                $html .= "<ul>";
+                $html .= "<ul class=\"articles-list\">";
                 foreach ($document->articles as $article) {
-                    $html .= "<li>";
+                    $html .= "<li class=\"article-item\">";
                     $link = $this->getArticleLink($article);
                     $html .= "<a href=\"{$link}\">{$article->name}</a>";
+
+                    if (count($article->headers)) {
+                        $html .= "<ul class=\"headers-list\">";
+                        foreach ($article->headers as $header) {
+                            $html .= "<li class=\"header-item\">";
+                            $link = $this->getArticleLink($article) . '#' . rawurlencode($header);
+                            $html .= "<a href=\"{$link}\">{$header}</a>";
+                            $html .= "</li>";
+                        }
+                        $html .= "</ul>";
+                    }
+
                     $html .= "</li>";
                 }
                 $html .= "</ul>";

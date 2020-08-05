@@ -20,6 +20,11 @@
 
       /* Sidebar */
 
+      .sidebar {
+          position:fixed;
+          top:0;
+      }
+
       .sidebar ul li {
           list-style-type: none;
       }
@@ -37,17 +42,30 @@
           color: #0c2035;
       }
 
-      .sidebar a.sidebar-heading {
-          font-weight: 700;
-      }
-
       .sidebar a.active {
           font-weight: 500;
           color: #2666aa;
       }
 
-      .sidebar a.sidebar-heading.active {
+      /* Sidebar - Documents */
+
+      .document-item {
+          margin-top: 10px;
+      }
+
+      .document-item > a {
           font-weight: 700;
+      }
+
+      .document-item > a.active {
+          font-weight: 700;
+      }
+
+      /* Sidebar - Articles */
+
+      /* Sidebar - Headers */
+      .headers-list {
+          display: none;
       }
 
       /* Content */
@@ -72,13 +90,48 @@
 </head>
 <body>
 <div class="container">
-  <div class="sidebar">
-    {sidebar}
+  <div class="sidebar-container">
+    <div class="sidebar">{sidebar}</div>
   </div>
   <div class="content-container">
     <div class="content">{document}</div>
   </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.20.0/prism.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script>
+    function sidebarActive(recalculateHeadersList) {
+        $('.sidebar li a').removeClass('active');
+
+        if (recalculateHeadersList) {
+            $('.sidebar .headers-list').hide();
+        }
+
+        var current = location.pathname;
+        if (current === "/") {
+            current = "/index.html";
+        }
+        current += location.hash;
+
+        $('.sidebar li').each(function () {
+            var elementLi = $(this);
+            var elementA = elementLi.find('a').first();
+            if (elementA.attr('href') === current) {
+                elementA.addClass('active');
+                if (elementLi.hasClass('article-item')) {
+                    elementLi.find('.headers-list').show();
+                }
+            }
+        })
+    }
+
+    $(window).on('hashchange', function () {
+        sidebarActive();
+    });
+
+    $(function () {
+        sidebarActive(true);
+    })
+</script>
 </body>
 </html>

@@ -8,6 +8,8 @@ class Article
 
     public $name;
 
+    public $headers = [];
+
     public function __construct($path)
     {
         $this->path = $path;

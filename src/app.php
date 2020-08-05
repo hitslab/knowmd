@@ -3,6 +3,7 @@
 use App\Service\AssetsService;
 use App\Service\BuildService;
 use App\Service\DocsService;
+use App\Service\ExtendedParsedown;
 use App\Service\FilesService;
 use App\Service\SidebarService;
 use App\Service\TemplateService;
@@ -26,6 +27,9 @@ $container
     ->register('files_service', FilesService::class);
 
 $container
+    ->register('parser', ExtendedParsedown::class);
+
+$container
     ->register('template_service', TemplateService::class)
     ->addArgument($paths['templates']);
 
@@ -45,6 +49,7 @@ $container
     ->addArgument(new Reference('files_service'))
     ->addArgument(new Reference('template_service'))
     ->addArgument(new Reference('sidebar_service'))
+    ->addArgument(new Reference('parser'))
     ->addArgument($paths['docs'])
     ->addArgument($paths['build']);
 
