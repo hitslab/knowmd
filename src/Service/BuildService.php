@@ -13,8 +13,12 @@ class BuildService
         AssetsService $assetsService,
         DocsService $docsService,
         FilesService $filesService,
-        $buildPath
+        $buildPath,
+        $assetsPath,
+        $docsPath
     ) {
+        $filesService->createDir($assetsPath);
+        $filesService->createDir($docsPath);
         $this->assetsService = $assetsService;
         $this->docsService = $docsService;
         $this->filesService = $filesService;

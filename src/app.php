@@ -58,4 +58,6 @@ $container
     ->addArgument(new Reference('assets_service'))
     ->addArgument(new Reference('docs_service'))
     ->addArgument(new Reference('files_service'))
-    ->addArgument($paths['build']);
+    ->addArgument($paths['build'])
+    ->addArgument($paths['assets'])
+    ->addArgument($paths['docs']);
